@@ -122,4 +122,37 @@ startx
 ````
 
 
+> Note: if something goes worng try the code below and should work after a reboot
 
+- Disable broken `card1`
+
+````bash
+sudo nano /etc/udev/rules.d/99-disable-card1.rules
+````
+
+- Add this
+
+````bash
+KERNEL=="card1", SUBSYSTEM=="drm", TAG+="uaccess", OPTIONS+="ignore_device"
+````
+
+- Now reload the rules
+
+````bash
+sudo udevadm control --reload
+sudo udevadm trigger
+````
+
+- You can cinfirm the `card1` is no longer available to your user with:
+
+````bash
+ls -l /dev/dri
+````
+
+- and
+
+````bash
+test -r /dev/dri/card1 && echo "still readable" || echo "not readable"
+````
+
+Thankyou hope this helps and you dont have to wake all night like me
